@@ -2,7 +2,6 @@
 
 import axios, { AxiosResponse } from 'axios';
 import { RestHttpHeaders } from './restHeaders.service';
-import { toast } from '@/components/bsToast';
 
 const protocol = process.env.NEXT_PUBLIC_PROTOCOL || 'http';
 const host = process.env.NEXT_PUBLIC_HOST || 'localhost';
@@ -45,7 +44,6 @@ export const RestEndPService = () => {
 
 
     const get = (path: string, params?: any): Promise<AxiosResponse> => axiosInstance.get(path, { params });
-    const post = async (path: string, data: any, headers?:any): Promise<AxiosResponse> => await axiosInstance.post(path, data, headers || null);
 
-    return { get, post };
+    return { get };
 }
