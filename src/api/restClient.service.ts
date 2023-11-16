@@ -5,8 +5,8 @@ import { RestHttpHeaders } from './restHeaders.service';
 
 const protocol = process.env.NEXT_PUBLIC_PROTOCOL || 'http';
 const host = process.env.NEXT_PUBLIC_HOST || 'localhost';
-const port = process.env.NEXT_PUBLIC_PORT || '9000';
-const service = process.env.NEXT_PUBLIC_SERVICE || '/api/v1';
+const port = process.env.NEXT_PUBLIC_PORT || '8010';
+const service = process.env.NEXT_PUBLIC_SERVICE || '/api/v1/reader/';
 const contentType = process.env.NEXT_PUBLIC_CONTENT_TYPE || 'application/json';
 const requestTimeout = process.env.NEXT_PUBLIC_TIME_OUT || '12000';
 

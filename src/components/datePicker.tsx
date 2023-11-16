@@ -5,6 +5,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import moment from "moment";
 
 export const BSDatePicker = (props: {dateSelected: Function}) => {
+  const longPressDelay = 1;
   const selectConstraint = {
     start: '00:01', 
     end: '23:59', 
@@ -16,7 +17,7 @@ export const BSDatePicker = (props: {dateSelected: Function}) => {
 
   const dateSelected = (selectedDate: any) => {
     console.log(selectedDate.startStr);
-    const date = moment(selectedDate.startStr).format('DD-MM-YYYY');
+    const date = moment(selectedDate.startStr).format('YYYY-MM-DD');
     props.dateSelected(date || "");
   }
 
@@ -36,6 +37,7 @@ export const BSDatePicker = (props: {dateSelected: Function}) => {
           aspectRatio={1.27}
           initialView='dayGridMonth'
           nowIndicator={true}
+          longPressDelay={longPressDelay}
           editable={true}
           selectable={true}
           selectMirror={true}

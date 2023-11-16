@@ -1,38 +1,56 @@
 "use client";
 import BsStatus from "@/components/bsStatus";
-import { ToastContainer, toast } from "@/components/bsToast";
+import { ToastContainer } from "@/components/bsToast";
 import { BSDatePicker } from "@/components/datePicker";
 import { DashboardService } from "@/library/dashboard.service";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { BsTable } from "@/components/bsTable";
 
 export default function Dashboard() {
-    const [date, setDate] = useState(null);
-    const pathparams = useParams();
+    const [num, setNum] = useState<number | undefined>();
+    const [date, setDate] = useState("");
     const queryparameters = useSearchParams();
     const dashboardService = DashboardService();
+    const [dimensions, setDimensions] = useState<any>(
+        {
+            width: window!.innerWidth,
+            height: window!.innerHeight,
+        }
+    );
+
+    const handleResize = () => {
+        setDimensions({
+            width: window!.innerWidth,
+            height: window!.innerHeight,
+        });
+    }
+    
     const dateSelected = (date: any) => {
-        setDate(date);
+        setDate(moment(date).format('DD-MM-YYYY'));
+        getNumberByDate(date);
     }
 
-    const getNumberByDate = async () => {
-        const selectedDate = queryparameters.get('date') || moment().format('YYYY-MM-DD');
-        console.log("pathparams", pathparams, selectedDate);
+    const getNumberByDate = async (selectedDate: string) => {
         const [response, isLoading, error] = await dashboardService.getNumberByDate(selectedDate);
-        console.log("dsafas", response);
+        let num: number | undefined;
+        if (response) num = response.randomNumber;
+        setNum(num);
     }
 
     useEffect(() => {
-        getNumberByDate();
-    }, [])
+        window.addEventListener("resize", handleResize, false);
+        const selectedDate = queryparameters.get('date') || moment().format('YYYY-MM-DD');
+        setDate(moment(selectedDate).format('DD-MM-YYYY'));
+        getNumberByDate(selectedDate);
+    }, []);
 
     return (
         <>
             <ToastContainer />
-            <header className="bg-[#0369a1]">
-                <nav className="bg-[#0369a1] border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+            <header className="overflow-hidden bg-gradient-to-r from-[#00C5EF] to-[#0092f4]">
+                <nav className="border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
                     <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                         <a href="https://flowbite.com" className="flex items-center">
                             <img src="https://flowbite.com/docs/images/logo.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
@@ -63,20 +81,18 @@ export default function Dashboard() {
             </header>
             <main className="flex min-h-main w-full">
                 <section className="flex flex-row w-full bg-white dark:bg-gray-900">
-                    <BsStatus date={date} />
-                    <BSDatePicker dateSelected={dateSelected} />
+                    <section className="flex flex-row w-full bg-white">
+                        <BsStatus date={date} num={num} dimensions={dimensions} dateSelected={dateSelected} />
+                    </section>
+                    {
+                        (dimensions!.width >= 1024) && 
+                        <section className="flex flex-row w-full bg-white">
+                            <BSDatePicker dateSelected={dateSelected} />
+                        </section>
+                    }
                     {/* <BsTable /> */}
                 </section>
             </main>
-            {/* <footer className="bg-[#0369a1]">
-                <nav className="bg-[#0369a1] border-gray-200 px-1 lg:px-6 dark:bg-gray-800">
-                    <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-                        <a href="https://flowbite.com" className="flex items-center">
-                            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-                        </a>
-                    </div>
-                </nav>
-            </footer> */}
         </>
     )
 }

@@ -3,16 +3,15 @@ import { AxiosError } from "axios";
 
 export const DashboardService = () => {
     const restEndPService = RestEndPService();
-    
     const getNumberList = async (date: string | null) => {
-        let response: string = "";
+        let response: string = "/reader";
         let isLoading: boolean = true;
         let error: any = {
             status: "",
             message: ""
         };
         try {
-            const data: any = await restEndPService.get("/allNumbers", date).then((response: { data: any; }) => response.data);
+            const data: any = await restEndPService.get("allNumbers", date).then((response: { data: any; }) => response.data);
             response = data;
         } catch (err: unknown) {
             if (err instanceof AxiosError) {
@@ -35,7 +34,7 @@ export const DashboardService = () => {
             message: ""
         };
         try {
-            const data: any = await restEndPService.get(`/number/${date}`).then((response: { data: any; }) => response.data);
+            const data: any = await restEndPService.get(`number/${date}`).then((response: { data: any; }) => response.data);
             response = data;
         } catch (err: unknown) {
             if (err instanceof AxiosError) {
