@@ -1,14 +1,17 @@
-import { unmountComponentAtNode } from "react-dom";
 import { createRoot } from "react-dom/client";
 
 export const toast = {
   remove: () => {
-    unmountComponentAtNode(document.getElementById('toast-container')!);
-    toast.currentToast = false;
-    if (toast.timeout) {
-      clearTimeout(toast.timeout);
-      toast.timeout = null;
-    }
+    setTimeout(() => {
+      const container = document.getElementById('toast-container');
+      const root = createRoot(container!);
+      root.unmount();
+      toast.currentToast = false;
+      if (toast.timeout) {
+        clearTimeout(toast.timeout);
+        toast.timeout = null;
+      }
+    }, 0)
   },
   currentToast: false,
   timeout: null,
@@ -52,8 +55,8 @@ export const ToastContainer = (props: any) => {
           .toast-container {
             position: fixed;
             width: 100%;
-            bottom: 20px;
-            left: 0px;
+            top: 20px;
+            right: 0px;
           }
         `}</style>
     </div>
@@ -83,19 +86,19 @@ const Toast = (props: any) => {
       <style jsx>{`
           @keyframes SlideInOut {
             0%{
-              transform: translateY(0);
+              transform: translateY(-40px);
               opacity:0;
             }
-            ${props.transitionPercentage}% {
-              transform: translateY(-40px);
+            1% {
+              transform: translateY(0px);
               opacity:1;
             }
-            ${(100 - props.transitionPercentage)}% {
-              transform: translateY(-40px);
+            99% {
+              transform: translateY(0px);
               opacity:1;
             }
             100% {
-              transform: translateY(0px);
+              transform: translateY(-40px);
               opacity:0;
             }
           }

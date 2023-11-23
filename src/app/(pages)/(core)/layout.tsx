@@ -1,3 +1,6 @@
+import { Loading } from "@/components/bsLoading"
+import { Suspense } from "react"
+
 export default function CoreLayout({
   children,
 }: {
@@ -5,7 +8,9 @@ export default function CoreLayout({
 }) {
   return (
     <>
-      {children}
+      <Suspense fallback={<Loading />}>
+        {children}
+      </Suspense>
     </>
   )
 }

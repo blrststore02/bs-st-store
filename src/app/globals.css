@@ -25,3 +25,19 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.fc .fc-button-primary {
+  color: #ffff;
+  background-color: #3485FF !important;
+  border-color: #FFFFFF !important;
+}
+
+.bs-form input:-webkit-autofill,
+.bs-form input:-webkit-autofill:hover, 
+.bs-form input:-webkit-autofill:focus, 
+.bs-form input:-webkit-autofill:active{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+    transition: none !important;
+    box-shadow: none !important;
+}
